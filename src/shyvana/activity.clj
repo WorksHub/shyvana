@@ -34,16 +34,25 @@
 
 (s/def :activity/actor string?)
 (s/def :activity/verb string?)
-;; :activity/object is a string that references object from collection in Stream DB
+;; :activity/object is a string that references Object from Collection in Stream DB
 ;; It has the form of: "SO:collection-name:object-id"
 (s/def :activity/object string?)
+;; :activity/fields is object containing extra fields to be saved with Activity.
+;; If you want Activity to be linked with some Object, ie. Job Posting linked with Job
+;; you should use Collections and Objects. You may use extra fields to save
+;; additional data about the Activity itself.
 (s/def :activity/fields map?)
+(s/def :activity/forward-to (s/coll-of string?))
+(s/def :activity/foreign-id string?)
+(s/def :activity/date inst?)
 
 (s/def ::activity
-  (s/keys :req [:activity/actor
-                :activity/verb
-                :activity/object]
-          :opt [:activity/fields]))
+  (s/keys :req-un [:activity/actor
+                   :activity/verb
+                   :activity/object]
+          :opt-un [:activity/fields
+                   :activity/foreign-id
+                   :activity/forward-to]))
 
 (s/fdef create-activity
   :args (s/cat :activity ::activity)
