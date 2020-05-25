@@ -33,7 +33,9 @@
     (.build forwarded)))
 
 (s/def :activity/actor string?)
-(s/def :activity/verb #{"tweet" "post-job"})
+(s/def :activity/verb string?)
+;; :activity/object is a string that references object from collection in Stream DB
+;; It has the form of: "SO:collection-name:object-id"
 (s/def :activity/object string?)
 (s/def :activity/fields map?)
 

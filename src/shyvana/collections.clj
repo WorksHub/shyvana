@@ -3,11 +3,11 @@
             [shyvana.convert :as convert])
   (:import [io.getstream.core.models CollectionData]))
 
-(defn add-to-collection [client collection data]
-  (.join (.add (.collections client) collection data)))
+(defn add-to-collection [client ^String collection-name data]
+  (.join (.add (.collections client) collection-name data)))
 
-(defn update-in-collection [client collection data]
-  (.join (.update (.collections client) collection data)))
+(defn update-in-collection [client ^String collection-name data]
+  (.join (.update (.collections client) collection-name data)))
 
 (defn- set-collection-fields [collection fields]
   (reduce-kv
@@ -20,21 +20,21 @@
   (-> (CollectionData. id)
       (set-collection-fields data)))
 
-(defn get-by-id [client collection id]
-  (let [entity (.join (.get (.collections client) collection id))]
+(defn get-by-id [client ^String collection-name ^String id]
+  (let [entity (.join (.get (.collections client) collection-name id))]
     (-> (.getData entity)
         convert/java->edn
         (assoc :id (.getID entity))
         walk/keywordize-keys)))
 
-(defn add-by-id [client collection id data]
-  (add-to-collection client collection (collection-entry id data)))
+(defn add-by-id [client ^String collection-name ^String id data]
+  (add-to-collection client collection-name (collection-entry id data)))
 
-(defn remove-by-id [client collection id]
-  (.join (.delete (.collections client) collection id)))
+(defn remove-by-id [client ^String collection-name ^String id]
+  (.join (.delete (.collections client) collection-name id)))
 
-(defn upsert-to-collection [client collection data]
-  (.join (.upsert (.collections client) collection data)))
+(defn upsert-to-collection [client collection-name data]
+  (.join (.upsert (.collections client) collection-name data)))
 
-(defn upsert-by-id [client collection id data]
-  (upsert-to-collection client collection [(collection-entry id data)]))
+(defn upsert-by-id [client ^String collection-name ^String id data]
+  (upsert-to-collection client collection-name [(collection-entry id data)]))
