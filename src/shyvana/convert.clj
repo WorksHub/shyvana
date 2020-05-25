@@ -66,13 +66,10 @@
         :else                    datum))
     data))
 
-(defn parse-extra [extra]
-  (java->edn extra))
-
 (defn activity->edn [activity]
   {:activity/id         (.getID activity)
    :activity/verb       (.getVerb activity)
-   :activity/extra      (parse-extra (.getExtra activity))
+   :activity/extra      (java->edn (.getExtra activity))
    :activity/score      (.getScore activity)
    :activity/to         (.getTo activity)
    :activity/actor      (.toString (.getActor activity))
@@ -82,7 +79,7 @@
 (defn enriched-activity->edn [activity]
   {:activity/id         (.getID activity)
    :activity/verb       (.getVerb activity)
-   :activity/extra      (parse-extra (.getExtra activity))
+   :activity/extra      (java->edn (.getExtra activity))
    :activity/score      (.getScore activity)
    :activity/to         (.getTo activity)
    :activity/actor      {:actor/id   (.getID (.getActor activity))

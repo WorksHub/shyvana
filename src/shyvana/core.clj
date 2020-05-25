@@ -1,24 +1,15 @@
 (ns shyvana.core
   "Shyvana!
   https://vignette.wikia.nocookie.net/leagueoflegends/images/5/51/Shyvana_OriginalCentered.jpg/revision/latest?cb=20180414203547"
-  (:require [clojure.reflect :as r]
-            [clojure.spec.alpha :as s]
-            [clojure.walk :as walk]
-            [shyvana.activity :as activity]
+  (:require [shyvana.activity :as activity]
             [shyvana.convert :as convert])
   (:import [com.google.common.collect Lists]
            [io.getstream.client Client]
            [io.getstream.core KeepHistory]
-           [io.getstream.core.models Activity FeedID]
-           [io.getstream.core.utils Enrichment]))
+           [io.getstream.core.models FeedID]))
 
 (defn build-client [key secret]
   (.build (Client/builder key secret)))
-
-;; TODO: we probably need some lifecycle in our app after all…
-(def client
-  (build-client "u5xcd6xvmsqf"
-                "2hg3e7wtf6cqr65f7c92qwsq9tf86gdrquzze993m9jhhncrdd4zud4nvvuzr6bb"))
 
 (defn flat-feed [client {:keys [type name]}]
   (.flatFeed client type name))
