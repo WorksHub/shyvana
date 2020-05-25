@@ -5,7 +5,6 @@
             [shyvana.convert :as convert])
   (:import [com.google.common.collect Lists]
            [io.getstream.client Client]
-           [io.getstream.core KeepHistory]
            [io.getstream.core.models FeedID]))
 
 (defn build-client [key secret]
@@ -57,23 +56,3 @@
 
 (defn -feeds-ids [feeds]
   (Lists/newArrayList (map #(FeedID. %) feeds)))
-
-(defn follow
-  "Follow feed for all new activities"
-  [who whom]
-  (.join (.follow who whom 0)))
-
-(defn follow-all
-  "Follow feed and copy all activites already existing on followed feed into target"
-  [who whom]
-  (.join (.follow who whom)))
-
-(defn unfollow
-  "Unfollow feed but keep activities from followed feed on followers' feed"
-  [who whom]
-  (.join (.unfollow who whom KeepHistory/YES)))
-
-(defn unfollow-all
-  "Unfollow feed and clear old activities from followers' feed"
-  [who whom]
-  (.join (.unfollow who whom)))
