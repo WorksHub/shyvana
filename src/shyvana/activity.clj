@@ -1,9 +1,23 @@
 (ns shyvana.activity
   (:require [clojure.spec.alpha :as s]
-            [shyvana.convert :as convert]
-            [shyvana.feed :as feed])
-  (:import [io.getstream.core.models Activity]
+            [shyvana.convert :as convert])
+  (:import [com.google.common.collect Lists]
+           [io.getstream.core.models Activity FeedID]
            [io.getstream.core.utils Enrichment]))
+
+
+(defn- feed->feed-id [feed]
+  (FeedID. (.toString (.getID feed))))
+
+(defn- feeds->feeds-ids [feeds]
+  (Lists/newArrayList (map feed->feed-id feeds)))
+
+(defn- string->feed-id [s]
+  (FeedID. s))
+
+(defn- strings->feeds-ids [feeds]
+  (Lists/newArrayList (map string->feed-id feeds)))
+
 
 (defn- add-activity-fields
   "Reduce over fields hashmap and convert content of hashmap into
@@ -32,7 +46,7 @@
                       (.foreignID foreign-id))
         with-fields (add-activity-fields activity fields)
         forwarded   (if forward-to
-                      (.to with-fields (feed/strings->feeds-ids forward-to))
+                      (.to with-fields (strings->feeds-ids forward-to))
                       with-fields)]
     (.build forwarded)))
 

@@ -1,8 +1,6 @@
 (ns shyvana.feed
   (:require [shyvana.activity :as activity]
-            [shyvana.convert :as convert])
-  (:import [com.google.common.collect Lists]
-           [io.getstream.core.models FeedID]))
+            [shyvana.convert :as convert]))
 
 (defn flat-feed
   "Creates reference to flat feed. Flat feed is the most basic type of feed.
@@ -46,15 +44,3 @@
   [feed]
   (doseq [id (map :activity/id (get-activities feed))]
     (remove-activity-by-id feed id)))
-
-(defn feed->feed-id [feed]
-  (FeedID. (.toString (.getID feed))))
-
-(defn feeds->feeds-ids [feeds]
-  (Lists/newArrayList (map feed->feed-id feeds)))
-
-(defn string->feed-id [s]
-  (FeedID. s))
-
-(defn strings->feeds-ids [feeds]
-  (Lists/newArrayList (map string->feed-id feeds)))
