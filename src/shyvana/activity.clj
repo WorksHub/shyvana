@@ -5,7 +5,10 @@
   (:import [io.getstream.core.models Activity]
            [io.getstream.core.utils Enrichment]))
 
-(defn- add-activity-fields [activity fields]
+(defn- add-activity-fields
+  "Reduce over fields hashmap and convert content of hashmap into
+  Activity extra fields"
+  [activity fields]
   (reduce-kv
     (fn [acc k v]
       (.extraField acc (str k) (convert/edn->java v)))

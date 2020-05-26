@@ -4,11 +4,16 @@
   (:import [com.google.common.collect Lists]
            [io.getstream.core.models FeedID]))
 
-(defn flat-feed [client {:keys [type name]}]
+(defn flat-feed
+  "Creates reference to flat feed. Flat feed is the most basic type of feed.
+  You don't have to 'declare' feed before using it. Once you reference feed
+  it becomes entity in your system. If you don't want to have this feed anymore
+  you can remove its' activities. You don't 'remove' feed."
+  [client {:keys [type name]}]
   (.flatFeed client type name))
 
 (defn post-activity
-  "Create activity object and add it to given feed"
+  "Create activity object and post it to given feed"
   [feed activity]
   (.getID (activity/add-activity feed (activity/create-activity activity))))
 
