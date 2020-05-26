@@ -1,10 +1,6 @@
 # shyvana
 
-A Clojure library designed to ... well, that part is up to you.
-
-## Usage
-
-FIXME
+Clojure, data-based, wrapper for https://getstream.io/ Java API.
 
 ## License
 
