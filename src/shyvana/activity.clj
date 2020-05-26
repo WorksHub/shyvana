@@ -1,5 +1,6 @@
 (ns shyvana.activity
   (:require [clojure.spec.alpha :as s]
+            [shyvana.core :as core]
             [shyvana.convert :as convert])
   (:import [io.getstream.core.models Activity]
            [io.getstream.core.utils Enrichment]))
@@ -28,7 +29,7 @@
                       (.foreignID foreign-id))
         with-fields (add-activity-fields activity fields)
         forwarded   (if forward-to
-                      (.to with-fields forward-to)
+                      (.to with-fields (core/strings->feeds-ids forward-to))
                       with-fields)]
     (.build forwarded)))
 

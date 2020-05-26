@@ -1,5 +1,16 @@
 (ns shyvana.feed
-  (:require [shyvana.convert :as convert]))
+  (:require [shyvana.activity :as activity]
+            [shyvana.convert :as convert])
+  (:import [com.google.common.collect Lists]
+           [io.getstream.core.models FeedID]))
+
+(defn flat-feed [client {:keys [type name]}]
+  (.flatFeed client type name))
+
+(defn post-activity
+  "Create activity object and add it to given feed"
+  [feed activity]
+  (.getID (activity/add-activity feed (activity/create-activity activity))))
 
 (defn get-activities [feed]
   (map convert/activity->edn
@@ -30,3 +41,15 @@
   [feed]
   (doseq [id (map :activity/id (get-activities feed))]
     (remove-activity-by-id feed id)))
+
+(defn feed->feed-id [feed]
+  (FeedID. (.toString (.getID feed))))
+
+(defn feeds->feeds-ids [feeds]
+  (Lists/newArrayList (map feed->feed-id feeds)))
+
+(defn string->feed-id [s]
+  (FeedID. s))
+
+(defn strings->feeds-ids [feeds]
+  (Lists/newArrayList (map string->feed-id feeds)))
