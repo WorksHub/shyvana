@@ -67,23 +67,23 @@
     data))
 
 (defn activity->edn [activity]
-  {:activity/id         (.getID activity)
-   :activity/verb       (.getVerb activity)
-   :activity/extra      (java->edn (.getExtra activity))
-   :activity/score      (.getScore activity)
-   :activity/to         (.getTo activity)
-   :activity/actor      (.toString (.getActor activity))
-   :activity/foreign-id (.getForeignID activity)
-   :activity/object-id  (.getObject activity)})
+  {:id         (.getID activity)
+   :verb       (.getVerb activity)
+   :extra      (java->edn (.getExtra activity))
+   :score      (.getScore activity)
+   :to         (.getTo activity)
+   :actor      (.toString (.getActor activity))
+   :foreign-id (.getForeignID activity)
+   :object-id  (.getObject activity)})
 
 (defn enriched-activity->edn [activity]
-  {:activity/id         (.getID activity)
-   :activity/verb       (.getVerb activity)
-   :activity/extra      (java->edn (.getExtra activity))
-   :activity/score      (.getScore activity)
-   :activity/to         (.getTo activity)
-   :activity/actor      {:actor/id   (.getID (.getActor activity))
-                         :actor/data (.getData (.getActor activity))}
-   :activity/foreign-id (.getForeignID activity)
-   :activity/object     (walk/keywordize-keys
-                          (java->edn (.getData (.getObject activity))))})
+  {:id         (.getID activity)
+   :verb       (.getVerb activity)
+   :extra      (java->edn (.getExtra activity))
+   :score      (.getScore activity)
+   :to         (.getTo activity)
+   :actor      {:id   (.getID (.getActor activity))
+                :data (.getData (.getActor activity))}
+   :foreign-id (.getForeignID activity)
+   :object     (walk/keywordize-keys
+                 (java->edn (.getData (.getObject activity))))})
