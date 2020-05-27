@@ -71,7 +71,7 @@
    :verb       (.getVerb activity)
    :extra      (java->edn (.getExtra activity))
    :score      (.getScore activity)
-   :to         (.getTo activity)
+   :to         (mapv #(.toString %) (.getTo activity))
    :actor      (.toString (.getActor activity))
    :foreign-id (.getForeignID activity)
    :object-id  (.getObject activity)})
@@ -81,7 +81,7 @@
    :verb       (.getVerb activity)
    :extra      (java->edn (.getExtra activity))
    :score      (.getScore activity)
-   :to         (.getTo activity)
+   :to         (mapv #(.toString %) (.getTo activity))
    :actor      {:id   (.getID (.getActor activity))
                 :data (.getData (.getActor activity))}
    :foreign-id (.getForeignID activity)
