@@ -69,6 +69,7 @@
 (defn activity->edn [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
+   :date       (.getTime activity)
    :extra      (java->edn (.getExtra activity))
    :score      (.getScore activity)
    :to         (mapv #(.toString %) (.getTo activity))
@@ -79,11 +80,12 @@
 (defn enriched-activity->edn [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
+   :date       (.getTime activity)
    :extra      (java->edn (.getExtra activity))
    :score      (.getScore activity)
    :to         (mapv #(.toString %) (.getTo activity))
    :actor      {:id   (.getID (.getActor activity))
-                :data (.getData (.getActor activity))}
+                :data (java->edn (.getData (.getActor activity)))}
    :foreign-id (.getForeignID activity)
    :object     (walk/keywordize-keys
                  (java->edn (.getData (.getObject activity))))})
