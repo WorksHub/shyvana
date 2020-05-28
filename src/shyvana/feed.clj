@@ -4,9 +4,10 @@
 
 (defn flat-feed
   "Creates reference to flat feed. Flat feed is the most basic type of feed.
-  You don't have to 'declare' feed before using it. Once you reference feed
+  You don't have to declare feed before using it. Once you reference feed
   it becomes entity in your system. If you don't want to have this feed anymore
-  you can remove its' activities. You don't 'remove' feed."
+  you can remove its' activities. You don't remove feed. You just stop using
+  refrence to it."
   [client {:keys [type name]}]
   (.flatFeed client type name))
 
