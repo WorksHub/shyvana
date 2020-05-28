@@ -7,7 +7,7 @@
 
 
 (defn- feed->feed-id [feed]
-  (FeedID. (.toString (.getID feed))))
+  (.getID feed))
 
 (defn- feeds->feeds-ids [feeds]
   (Lists/newArrayList (map feed->feed-id feeds)))
