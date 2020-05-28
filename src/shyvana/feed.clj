@@ -13,7 +13,7 @@
 (defn post-activity
   "post activity object to given feed"
   [feed activity]
-  (.getID (activity/post feed activity)))
+  (.getID (activity/post activity feed)))
 
 (defn post-activity-map
   "Create activity object and post it to given feed"

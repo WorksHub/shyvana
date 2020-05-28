@@ -76,5 +76,5 @@
   :args (s/cat :activity ::activity)
   :ret Activity)
 
-(defn post [feed activity]
+(defn post [activity feed]
   (.join (.addActivity feed activity)))
