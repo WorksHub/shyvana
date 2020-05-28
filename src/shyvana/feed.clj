@@ -16,14 +16,14 @@
   (.getID (activity/add-activity feed (activity/create-activity activity))))
 
 (defn get-activities [feed]
-  (map convert/activity->edn
+  (map convert/activity->map
        (.get (.getActivities feed))))
 
 (defn get-newest-activity [feed]
   (first (get-activities feed)))
 
 (defn get-enriched-activities [feed]
-  (map convert/enriched-activity->edn
+  (map convert/enriched-activity->map
        (.get (.getEnrichedActivities feed))))
 
 (defn get-newest-enriched-activity [feed]

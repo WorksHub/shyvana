@@ -66,7 +66,7 @@
         :else                    datum))
     data))
 
-(defn activity->edn [activity]
+(defn activity->map [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
@@ -77,7 +77,7 @@
    :foreign-id (.getForeignID activity)
    :object-id  (.getObject activity)})
 
-(defn enriched-activity->edn [activity]
+(defn enriched-activity->map [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
