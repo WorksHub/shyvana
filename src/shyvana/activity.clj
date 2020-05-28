@@ -2,6 +2,7 @@
   (:require [clojure.spec.alpha :as s]
             [shyvana.convert :as convert])
   (:import [com.google.common.collect Lists]
+           [io.getstream.client Feed]
            [io.getstream.core.models Activity FeedID]
            [io.getstream.core.utils Enrichment]))
 
@@ -77,4 +78,9 @@
   :ret Activity)
 
 (defn post [activity feed]
-  (.getID (.join (.addActivity feed activity))))
+  (.join (.addActivity feed activity)))
+
+(s/fdef post
+  :args (s/cat :activity Activity
+               :feed Feed)
+  :ret Activity)
