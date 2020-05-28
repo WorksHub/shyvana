@@ -34,10 +34,10 @@
   [{:keys [collection id]}]
   (Enrichment/createCollectionReference collection id))
 
-(defn create-activity [{:keys [actor verb object fields forward-to foreign-id date]
-                        :or   {fields     {}
-                               foreign-id ""
-                               date       (java.util.Date.)}}]
+(defn create [{:keys [actor verb object fields forward-to foreign-id date]
+               :or   {fields     {}
+                      foreign-id ""
+                      date       (java.util.Date.)}}]
   (let [activity    (doto (Activity/builder)
                       (.actor actor)
                       (.verb verb)
@@ -72,9 +72,9 @@
                    :activity/foreign-id
                    :activity/forward-to]))
 
-(s/fdef create-activity
+(s/fdef create
   :args (s/cat :activity ::activity)
   :ret Activity)
 
-(defn add-activity [feed activity]
+(defn post [feed activity]
   (.join (.addActivity feed activity)))
