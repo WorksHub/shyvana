@@ -25,7 +25,7 @@
   [activity fields]
   (reduce-kv
     (fn [acc k v]
-      (.extraField acc (str k) (convert/edn->java v)))
+      (.extraField acc (str k) (convert/map->java v)))
     activity
     fields))
 

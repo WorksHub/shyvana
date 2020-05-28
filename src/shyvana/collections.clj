@@ -12,7 +12,7 @@
 (defn- set-collection-fields [collection fields]
   (reduce-kv
     (fn [acc k v]
-      (.set acc (str k) (convert/edn->java v)))
+      (.set acc (str k) (convert/map->java v)))
     collection
     fields))
 
@@ -23,7 +23,7 @@
 (defn get-by-id [client ^String collection-name ^String id]
   (let [entity (.join (.get (.collections client) collection-name id))]
     (-> (.getData entity)
-        convert/java->edn
+        convert/java->map
         (assoc :id (.getID entity))
         walk/keywordize-keys)))
 
