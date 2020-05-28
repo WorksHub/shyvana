@@ -42,7 +42,7 @@
   [feed foreign-id]
   (.join (.removeActivityByForeignID feed foreign-id)))
 
-(defn clear-feed
+(defn clear
   "Clear all activites published on feed. If some activity from this feed was
   passed on to other feed, or shown on other feed through following relation
   it will also be cleared from other feed."
