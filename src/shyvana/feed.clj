@@ -11,9 +11,14 @@
   (.flatFeed client type name))
 
 (defn post-activity
-  "Create activity object and post it to given feed"
+  "post activity object to given feed"
   [feed activity]
-  (.getID (activity/add-activity feed (activity/create-activity activity))))
+  (.getID (activity/add-activity feed activity)))
+
+(defn post-activity-map
+  "Create activity object and post it to given feed"
+  [feed activity-map]
+  (post-activity feed (activity/create-activity activity-map)))
 
 (defn get-activities [feed]
   (map convert/activity->map
