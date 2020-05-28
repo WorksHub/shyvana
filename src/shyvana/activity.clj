@@ -77,4 +77,4 @@
   :ret Activity)
 
 (defn post [activity feed]
-  (.join (.addActivity feed activity)))
+  (.getID (.join (.addActivity feed activity))))
