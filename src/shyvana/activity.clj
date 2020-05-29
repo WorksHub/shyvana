@@ -7,13 +7,13 @@
            [io.getstream.core.utils Enrichment]))
 
 
-(defn- feed->feed-id [feed]
+(defn- feed->feed-id [^Feed feed]
   (.getID feed))
 
 (defn- feeds->feeds-ids [feeds]
   (Lists/newArrayList (map feed->feed-id feeds)))
 
-(defn- string->feed-id [s]
+(defn- string->feed-id [^String s]
   (FeedID. s))
 
 (defn- strings->feeds-ids [feeds]
@@ -80,7 +80,7 @@
   :args (s/cat :activity ::activity)
   :ret ::java-activity)
 
-(defn post [activity feed]
+(defn post [activity ^Feed feed]
   (.join (.addActivity feed activity)))
 
 (s/fdef post

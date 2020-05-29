@@ -1,7 +1,8 @@
 (ns shyvana.convert
   (:require [clojure.string :as str]
             [clojure.walk :as walk])
-  (:import [com.google.common.collect Lists Maps]))
+  (:import [com.google.common.collect Lists Maps]
+           [io.getstream.core.models Activity] ))
 
 ;; TODO: rethink using clojure.walk/keywordize-keys
 ;; Problem with keywordize-keys is that it doesn't care
@@ -51,7 +52,12 @@
       (.put j-map (str key) val))
     j-map))
 
-(defn real-collection? [datum]
+(defn real-collection?
+  "Clojure postwalk iterates over a map as collection of MapEntries. MapEntry
+  is a collection, but we don't want to transform this collection into Java
+  collection. For this reason, when we walk through data, we check for collection
+  not being MapEntry, to avoid destroying maps."
+  [datum]
   (and
     (coll? datum)
     (not= (type datum) clojure.lang.MapEntry)))
@@ -66,7 +72,7 @@
         :else                    datum))
     data))
 
-(defn activity->map [activity]
+(defn activity->map [^Activity activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
@@ -77,7 +83,7 @@
    :foreign-id (.getForeignID activity)
    :object-id  (.getObject activity)})
 
-(defn enriched-activity->map [activity]
+(defn enriched-activity->map [^Activity activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)

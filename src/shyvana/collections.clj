@@ -16,7 +16,7 @@
     collection
     fields))
 
-(defn- collection-entry [id data]
+(defn- collection-entry [^String id data]
   (-> (CollectionData. id)
       (set-collection-fields data)))
 
@@ -33,7 +33,7 @@
 (defn remove-by-id [client ^String collection-name ^String id]
   (.join (.delete (.collections client) collection-name id)))
 
-(defn upsert-to-collection [client collection-name data]
+(defn upsert-to-collection [client ^String collection-name data]
   (.join (.upsert (.collections client) collection-name data)))
 
 (defn upsert-by-id [client ^String collection-name ^String id data]
