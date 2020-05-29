@@ -1,5 +1,5 @@
 (ns shyvana.client
   (:import [io.getstream.client Client]))
 
-(defn build-client [key secret]
+(defn connect [key secret]
   (.build (Client/builder key secret)))

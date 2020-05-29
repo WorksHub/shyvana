@@ -18,31 +18,31 @@
     (keyword (subs value 1))
     value))
 
-(defprotocol ConvertibleToEDN
-  (->edn [o]))
+(defprotocol ConvertibleToMAP
+  (->map [o]))
 
-(extend-protocol ConvertibleToEDN
+(extend-protocol ConvertibleToMAP
   java.util.Map
-  (->edn [o] (let [entries (.entrySet o)]
+  (->map [o] (let [entries (.entrySet o)]
                (reduce (fn [m [^String k v]]
-                         (assoc m (keyword-or-value k) (->edn v)))
+                         (assoc m (keyword-or-value k) (->map v)))
                        {} entries)))
 
   java.util.List
-  (->edn [o] (vec (map ->edn o)))
+  (->map [o] (vec (map ->map o)))
 
   java.lang.String
-  (->edn [o] (keyword-or-value o))
+  (->map [o] (keyword-or-value o))
 
   java.lang.Object
-  (->edn [o] o)
+  (->map [o] o)
 
   nil
-  (->edn [_] nil))
+  (->map [_] nil))
 
-(defn java->edn
+(defn java->map
   [m]
-  (->edn m))
+  (->map m))
 
 (defn map->java [map]
   (let [j-map (Maps/newHashMap)]
@@ -56,7 +56,7 @@
     (coll? datum)
     (not= (type datum) clojure.lang.MapEntry)))
 
-(defn edn->java [data]
+(defn map->java [data]
   (walk/postwalk
     (fn [datum]
       (cond
@@ -66,26 +66,26 @@
         :else                    datum))
     data))
 
-(defn activity->edn [activity]
+(defn activity->map [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
-   :extra      (java->edn (.getExtra activity))
+   :extra      (java->map (.getExtra activity))
    :score      (.getScore activity)
    :to         (mapv #(.toString %) (.getTo activity))
    :actor      (.toString (.getActor activity))
    :foreign-id (.getForeignID activity)
    :object-id  (.getObject activity)})
 
-(defn enriched-activity->edn [activity]
+(defn enriched-activity->map [activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
-   :extra      (java->edn (.getExtra activity))
+   :extra      (java->map (.getExtra activity))
    :score      (.getScore activity)
    :to         (mapv #(.toString %) (.getTo activity))
    :actor      {:id   (.getID (.getActor activity))
-                :data (java->edn (.getData (.getActor activity)))}
+                :data (java->map (.getData (.getActor activity)))}
    :foreign-id (.getForeignID activity)
    :object     (walk/keywordize-keys
-                 (java->edn (.getData (.getObject activity))))})
+                 (java->map (.getData (.getObject activity))))})

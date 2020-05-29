@@ -4,20 +4,20 @@
 
 (defn follow
   "Follow feed for all new activities"
-  [who whom]
-  (.join (.follow who whom 0)))
+  [feed follower]
+  (.join (.follow feed follower 0)))
 
 (defn follow-all
   "Follow feed and copy all activites already existing on followed feed into target"
-  [who whom]
-  (.join (.follow who whom)))
+  [feed follower]
+  (.join (.follow feed follower)))
 
 (defn unfollow
   "Unfollow feed but keep activities from followed feed on followers' feed"
-  [who whom]
-  (.join (.unfollow who whom KeepHistory/YES)))
+  [feed follower]
+  (.join (.unfollow feed follower KeepHistory/YES)))
 
 (defn unfollow-all
   "Unfollow feed and clear old activities from followers' feed"
-  [who whom]
-  (.join (.unfollow who whom)))
+  [feed follower]
+  (.join (.unfollow feed follower)))

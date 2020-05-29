@@ -2,12 +2,13 @@
   (:require [clojure.spec.alpha :as s]
             [shyvana.convert :as convert])
   (:import [com.google.common.collect Lists]
+           [io.getstream.client Feed]
            [io.getstream.core.models Activity FeedID]
            [io.getstream.core.utils Enrichment]))
 
 
 (defn- feed->feed-id [feed]
-  (FeedID. (.toString (.getID feed))))
+  (.getID feed))
 
 (defn- feeds->feeds-ids [feeds]
   (Lists/newArrayList (map feed->feed-id feeds)))
@@ -25,7 +26,7 @@
   [activity fields]
   (reduce-kv
     (fn [acc k v]
-      (.extraField acc (str k) (convert/edn->java v)))
+      (.extraField acc (str k) (convert/map->java v)))
     activity
     fields))
 
@@ -34,10 +35,10 @@
   [{:keys [collection id]}]
   (Enrichment/createCollectionReference collection id))
 
-(defn create-activity [{:keys [actor verb object fields forward-to foreign-id date]
-                        :or   {fields     {}
-                               foreign-id ""
-                               date       (java.util.Date.)}}]
+(defn create [{:keys [actor verb object fields forward-to foreign-id date]
+               :or   {fields     {}
+                      foreign-id ""
+                      date       (java.util.Date.)}}]
   (let [activity    (doto (Activity/builder)
                       (.actor actor)
                       (.verb verb)
@@ -72,9 +73,17 @@
                    :activity/foreign-id
                    :activity/forward-to]))
 
-(s/fdef create-activity
-  :args (s/cat :activity ::activity)
-  :ret Activity)
+(s/def ::java-activity (partial instance? Activity ))
+(s/def ::java-feed (partial instance? Feed))
 
-(defn add-activity [feed activity]
+(s/fdef create
+  :args (s/cat :activity ::activity)
+  :ret ::java-activity)
+
+(defn post [activity feed]
   (.join (.addActivity feed activity)))
+
+(s/fdef post
+  :args (s/cat :activity ::java-activity
+               :feed ::java-feed)
+  :ret ::java-activity)

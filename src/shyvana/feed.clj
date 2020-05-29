@@ -11,20 +11,15 @@
   [client {:keys [type name]}]
   (.flatFeed client type name))
 
-(defn post-activity
-  "Create activity object and post it to given feed"
-  [feed activity]
-  (.getID (activity/add-activity feed (activity/create-activity activity))))
-
 (defn get-activities [feed]
-  (map convert/activity->edn
+  (map convert/activity->map
        (.get (.getActivities feed))))
 
 (defn get-newest-activity [feed]
   (first (get-activities feed)))
 
 (defn get-enriched-activities [feed]
-  (map convert/enriched-activity->edn
+  (map convert/enriched-activity->map
        (.get (.getEnrichedActivities feed))))
 
 (defn get-newest-enriched-activity [feed]
@@ -38,7 +33,7 @@
   [feed foreign-id]
   (.join (.removeActivityByForeignID feed foreign-id)))
 
-(defn clear-feed
+(defn clear
   "Clear all activites published on feed. If some activity from this feed was
   passed on to other feed, or shown on other feed through following relation
   it will also be cleared from other feed."
