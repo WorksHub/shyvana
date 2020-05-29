@@ -73,14 +73,17 @@
                    :activity/foreign-id
                    :activity/forward-to]))
 
+(s/def ::java-activity (partial instance? Activity ))
+(s/def ::java-feed (partial instance? Feed))
+
 (s/fdef create
   :args (s/cat :activity ::activity)
-  :ret Activity)
+  :ret ::java-activity)
 
 (defn post [activity feed]
   (.join (.addActivity feed activity)))
 
 (s/fdef post
-  :args (s/cat :activity Activity
-               :feed Feed)
-  :ret Activity)
+  :args (s/cat :activity ::java-activity
+               :feed ::java-feed)
+  :ret ::java-activity)
