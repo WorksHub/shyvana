@@ -73,7 +73,7 @@
                    :activity/foreign-id
                    :activity/forward-to]))
 
-(s/def ::java-activity (partial instance? Activity ))
+(s/def ::java-activity (partial instance? Activity))
 (s/def ::java-feed (partial instance? Feed))
 
 (s/fdef create
