@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.walk :as walk])
   (:import [com.google.common.collect Lists Maps]
-           [io.getstream.core.models Activity] ))
+           [io.getstream.core.models Activity]))
 
 ;; TODO: rethink using clojure.walk/keywordize-keys
 ;; Problem with keywordize-keys is that it doesn't care
@@ -45,7 +45,7 @@
   [m]
   (->map m))
 
-(defn map->java [map]
+(defn -map->java [map]
   (let [j-map (Maps/newHashMap)]
 
     (doseq [[key val] map]
@@ -62,12 +62,12 @@
     (coll? datum)
     (not= (type datum) clojure.lang.MapEntry)))
 
-(defn map->java [data]
+(defn map->java [^clojure.lang.PersistentArrayMap data]
   (walk/postwalk
     (fn [datum]
       (cond
         (keyword? datum)         (str datum)
-        (map? datum)             (map->java datum)
+        (map? datum)             (-map->java datum)
         (real-collection? datum) (Lists/newArrayList datum)
         :else                    datum))
     data))
