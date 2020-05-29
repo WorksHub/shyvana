@@ -18,10 +18,10 @@
     (keyword (subs value 1))
     value))
 
-(defprotocol ConvertibleToMAP
+(defprotocol ConvertibleToMap
   (->map [o]))
 
-(extend-protocol ConvertibleToMAP
+(extend-protocol ConvertibleToMap
   java.util.Map
   (->map [o] (let [entries (.entrySet o)]
                (reduce (fn [m [^String k v]]
