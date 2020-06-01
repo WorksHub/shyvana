@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.walk :as walk])
   (:import [com.google.common.collect Lists Maps]
-           [io.getstream.core.models Activity]))
+           [io.getstream.core.models Activity EnrichedActivity]))
 
 ;; TODO: rethink using clojure.walk/keywordize-keys
 ;; Problem with keywordize-keys is that it doesn't care
@@ -83,7 +83,7 @@
    :foreign-id (.getForeignID activity)
    :object-id  (.getObject activity)})
 
-(defn enriched-activity->map [^Activity activity]
+(defn enriched-activity->map [^EnrichedActivity activity]
   {:id         (.getID activity)
    :verb       (.getVerb activity)
    :date       (.getTime activity)
