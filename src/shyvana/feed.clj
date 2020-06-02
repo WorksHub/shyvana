@@ -38,5 +38,5 @@
   passed on to other feed, or shown on other feed through following relation
   it will also be cleared from other feed."
   [feed]
-  (doseq [id (map :activity/id (get-activities feed))]
+  (doseq [id (map :id (get-activities feed))]
     (remove-activity-by-id feed id)))
