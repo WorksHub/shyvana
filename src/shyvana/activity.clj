@@ -81,7 +81,8 @@
   :ret ::java-activity)
 
 (defn post [activity ^Feed feed]
-  (.join (.addActivity feed (create activity))))
+  (let [posted (.join (.addActivity feed (create activity)))]
+    {:id (.getID posted)}))
 
 (s/fdef post
   :args (s/cat :activity ::java-activity
