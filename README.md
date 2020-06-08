@@ -1,4 +1,4 @@
-# shyvana
+# Shyvana
 _What do you get when a dragon sneezes? Out of the way! - Shyvana_  
 [![Clojars Project](https://img.shields.io/clojars/v/workshub/shyvana.svg)](https://clojars.org/workshub/shyvana)
 
