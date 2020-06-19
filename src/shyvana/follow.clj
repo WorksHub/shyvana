@@ -1,5 +1,4 @@
 (ns shyvana.follow
-  "Examplary ns for discovering stream possibilites"
   (:import [io.getstream.core KeepHistory]))
 
 (defn follow
