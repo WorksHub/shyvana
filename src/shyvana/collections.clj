@@ -16,7 +16,7 @@
     collection
     fields))
 
-(defn- collection-entry [^String id data]
+(defn collection-entry [^String id data]
   (-> (CollectionData. id)
       (set-collection-fields data)))
 
