@@ -4,36 +4,21 @@
   (:import [com.google.common.collect Lists Maps]
            [io.getstream.core.models Activity EnrichedActivity]))
 
-;; TODO: rethink using clojure.walk/keywordize-keys
-;; Problem with keywordize-keys is that it doesn't care
-;; how the original data was looking when it was uploaded to DB.
-;; It just takes all keys in all maps and transforms them to keywords, so…
-;; I'd rather keep current implementation since it attemptes to recreate
-;; the data in the form it was uploaded to DB
-(defn keyword-or-value
-  "Takes value, possibly string, and if the first char is :
-  transforms string into keyword. Otherwise returns value.
-  Used to recreate keywords saved in DB as strings."
-  [value]
-  (if (and (string? value) (str/starts-with? value ":"))
-    (keyword (subs value 1))
-    value))
-
 (defprotocol ConvertibleToMap
   (->map [o]))
 
 (extend-protocol ConvertibleToMap
   java.util.Map
   (->map [o] (let [entries (.entrySet o)]
-               (reduce (fn [m [^String k v]]
-                         (assoc m (keyword-or-value k) (->map v)))
+               (reduce (fn [m [k v]]
+                         (assoc m (keyword k) (->map v)))
                        {} entries)))
 
   java.util.List
   (->map [o] (vec (map ->map o)))
 
   java.lang.String
-  (->map [o] (keyword-or-value o))
+  (->map [o] o)
 
   java.lang.Object
   (->map [o] o)
@@ -49,7 +34,7 @@
   (let [j-map (Maps/newHashMap)]
 
     (doseq [[key val] map]
-      (.put j-map (str key) val))
+      (.put j-map (name key) val))
     j-map))
 
 (defn real-collection?
@@ -66,7 +51,7 @@
   (walk/postwalk
     (fn [datum]
       (cond
-        (keyword? datum)         (str datum)
+        (keyword? datum)         (name datum)
         (map? datum)             (-map->java datum)
         (real-collection? datum) (Lists/newArrayList datum)
         :else                    datum))
