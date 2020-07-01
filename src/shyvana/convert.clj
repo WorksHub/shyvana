@@ -78,5 +78,7 @@
    :actor      {:id   (.getID (.getActor activity))
                 :data (java->map (.getData (.getActor activity)))}
    :foreign-id (.getForeignID activity)
-   :object     (walk/keywordize-keys
-                 (java->map (.getData (.getObject activity))))})
+   :object     (-> (.getData (.getObject activity))
+                   (java->map)
+                   (walk/keywordize-keys)
+                   (clojure.set/rename-keys {:_id :id}))})

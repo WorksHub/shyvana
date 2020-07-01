@@ -12,7 +12,10 @@
 (defn- set-collection-fields [collection fields]
   (reduce-kv
     (fn [acc k v]
-      (.set acc (name k) (convert/map->java v)))
+      (.set acc (if (= :id k)
+                  "_id"
+                  (name k))
+            (convert/map->java v)))
     collection
     fields))
 
