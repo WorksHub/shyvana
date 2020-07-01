@@ -12,7 +12,7 @@
 (defn- set-collection-fields [collection fields]
   (reduce-kv
     (fn [acc k v]
-      (.set acc (str k) (convert/map->java v)))
+      (.set acc (name k) (convert/map->java v)))
     collection
     fields))
 
