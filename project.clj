@@ -1,4 +1,4 @@
-(defproject workshub/shyvana "0.2.3-SNAPSHOT"
+(defproject workshub/shyvana "0.2.3"
   :description "Clojure, data-based, wrapper for getstream.io Java API"
   :url "https://github.com/WorksHub/shyvana"
   :license {:name "Eclipse Public License"
