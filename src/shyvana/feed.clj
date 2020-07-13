@@ -1,7 +1,8 @@
 (ns shyvana.feed
   (:require [shyvana.activity :as activity]
-            [shyvana.convert :as convert])
-  (:import [io.getstream.core.options Limit Offset]))
+            [shyvana.convert :as convert]
+            [shyvana.filters :as filters])
+  (:import [io.getstream.core.options Limit Offset Filter]))
 
 (defn flat-feed
   "Creates reference to flat feed. Flat feed is the most basic type of feed.
@@ -12,30 +13,44 @@
   [client {:keys [type name]}]
   (.flatFeed client type name))
 
+(defn- get-activities*
+  "Interface for simple Java method call"
+  ([x]
+   (.getActivities x))
+  ([x y]
+   (.getActivities x y))
+  ([x y z]
+   (.getActivities x y z)))
+
 (defn get-activities
   ([feed]
-   (get-activities feed 25 0))
+   (get-activities feed {}))
 
-  ([feed limit]
-   (get-activities feed limit 0))
-
-  ([feed limit offset]
-   (map convert/activity->map
-        (.get (.getActivities feed (Limit. limit) (Offset. offset))))))
+  ([feed feed-filter]
+   (map convert/enriched-activity->map
+        (.get (apply get-activities*
+                     (concat [feed] (filters/create-filter feed-filter)))))))
 
 (defn get-newest-activity [feed]
   (first (get-activities feed)))
 
+(defn- get-enriched-activities*
+  "Interface for simple Java method call"
+  ([x]
+   (.getEnrichedActivities x))
+  ([x y]
+   (.getEnrichedActivities x y))
+  ([x y z]
+   (.getEnrichedActivities x y z)))
+
 (defn get-enriched-activities
   ([feed]
-   (get-enriched-activities feed 25 0))
+   (get-enriched-activities feed {}))
 
-  ([feed limit]
-   (get-enriched-activities feed limit 0))
-
-  ([feed limit offset]
+  ([feed feed-filter]
    (map convert/enriched-activity->map
-        (.get (.getEnrichedActivities feed (Limit. limit) (Offset. offset))))))
+        (.get (apply get-enriched-activities*
+                     (concat [feed] (filters/create-filter feed-filter)))))))
 
 (defn get-newest-enriched-activity [feed]
   (first (get-enriched-activities feed)))
