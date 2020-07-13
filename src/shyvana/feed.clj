@@ -1,6 +1,7 @@
 (ns shyvana.feed
   (:require [shyvana.activity :as activity]
-            [shyvana.convert :as convert]))
+            [shyvana.convert :as convert])
+  (:import [io.getstream.core.options Limit Offset]))
 
 (defn flat-feed
   "Creates reference to flat feed. Flat feed is the most basic type of feed.
@@ -11,16 +12,30 @@
   [client {:keys [type name]}]
   (.flatFeed client type name))
 
-(defn get-activities [feed]
-  (map convert/activity->map
-       (.get (.getActivities feed))))
+(defn get-activities
+  ([feed]
+   (get-activities feed 25 0))
+
+  ([feed limit]
+   (get-activities feed limit 0))
+
+  ([feed limit offset]
+   (map convert/activity->map
+        (.get (.getActivities feed (Limit. limit) (Offset. offset))))))
 
 (defn get-newest-activity [feed]
   (first (get-activities feed)))
 
-(defn get-enriched-activities [feed]
-  (map convert/enriched-activity->map
-       (.get (.getEnrichedActivities feed))))
+(defn get-enriched-activities
+  ([feed]
+   (get-enriched-activities feed 25 0))
+
+  ([feed limit]
+   (get-enriched-activities feed limit 0))
+
+  ([feed limit offset]
+   (map convert/enriched-activity->map
+        (.get (.getEnrichedActivities feed (Limit. limit) (Offset. offset))))))
 
 (defn get-newest-enriched-activity [feed]
   (first (get-enriched-activities feed)))
