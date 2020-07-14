@@ -40,11 +40,11 @@
           [(when limit (Limit. limit))
            (when offset (Offset. offset))]))
 
-(defn get-followed
+(defn get-follow-relations
   "Checks whether feeds identified by their IDs are followed by one, particular feed
   (get-followed flat-feed-ref [(FeedID. \"tag:clojure\") (FeedID. \"tag:scala\")])"
   ([feed ids]
-   (get-followed feed ids {}))
+   (get-follow-relations feed ids {}))
 
   ([feed ids {:keys [limit offset]}]
    (let [ids (map #(FeedID. %) ids)]
