@@ -9,7 +9,7 @@
 (defn update-in-collection [client ^String collection-name data]
   (.join (.update (.collections client) collection-name data)))
 
-(defn- set-collection-fields [collection fields]
+(defn set-collection-fields [collection fields]
   (reduce-kv
     (fn [acc k v]
       (.set acc (if (= :id k)
