@@ -2,8 +2,7 @@
   (:require [shyvana.collections :as collections])
   (:import [io.getstream.core.models Data]))
 
-
-(defn user-entry [data]
+(defn- user-entry [data]
   (-> (Data.)
       (collections/set-collection-fields data)))
 
