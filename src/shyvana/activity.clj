@@ -35,12 +35,17 @@
   [{:keys [collection id]}]
   (Enrichment/createCollectionReference collection id))
 
+(defn- user-reference
+  "Create reference to user in collection, to bind user to activity"
+  [id]
+  (Enrichment/createUserReference id))
+
 (defn create [{:keys [actor verb object fields forward-to foreign-id date]
                :or   {fields     {}
                       foreign-id ""
                       date       (java.util.Date.)}}]
   (let [activity    (doto (Activity/builder)
-                      (.actor actor)
+                      (.actor (user-reference actor))
                       (.verb verb)
                       (.time date)
                       (.object (collection-reference object))
